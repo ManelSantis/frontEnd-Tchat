@@ -1,0 +1,37 @@
+body {
+  background-color: #6C7099;
+}
+
+#topBar {
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 8%;
+  background-color: white;
+}
+
+#menu {
+  margin-left: 20%;
+  padding-top: 1%;
+}
+
+label {
+  margin-right: 20%;
+  cursor: pointer;
+}
+
+button {
+  margin-top: -4px;
+  margin-right: 10px;
+  width: 100px;
+}
+
+#botBar {
+  width: 100%;
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  height: 15%;
+  background-color: white;
+}
