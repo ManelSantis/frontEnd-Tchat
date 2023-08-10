@@ -5,11 +5,16 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import App from './App.tsx';
+import Cadastro from './pages/Cadastro/cadastro.tsx';
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
+  },
+  {
+    path: "/cadastro",
+    element: <Cadastro />,
   },
 ]);
 

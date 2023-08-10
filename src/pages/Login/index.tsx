@@ -37,7 +37,7 @@ export default function Login() {
                         Entrar
                     </button>
                     <div className="font-semibold text-xl text-[#E5E48C] mt-6">
-                        Não tem uma conta? <Link className="text-[#3F4259] hover:text-white" to={'#'}>Cadastre-se</Link>
+                        Não tem uma conta? <Link className="text-[#3F4259] hover:text-white" to={'/cadastro'}>Cadastre-se</Link>
                     </div>
                 </form>
             </div>
