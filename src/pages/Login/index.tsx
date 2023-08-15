@@ -25,7 +25,17 @@ export default function Login() {
     const [loading, setLoading] = useState(false);
 
     const onSubmit = (data: SignInFormData) => {
-        console.log(requestBackendLogin(data))
+        setLoading(true);
+        requestBackendLogin(data)
+            .then(response => {
+                setSuccess(true);
+                setLoading(false);
+                console.log(response);
+            })
+            .catch(error => {
+                console.log(error);
+                setLoading(false);
+            });
     }
 
     return (
