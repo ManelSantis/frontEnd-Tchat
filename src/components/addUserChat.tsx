@@ -15,6 +15,9 @@ export default function AddUserChat() {
         }
     };
 
+    function showUsers() {
+
+    }
 
     return (
         <>

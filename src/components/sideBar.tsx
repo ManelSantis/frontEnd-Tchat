@@ -4,7 +4,7 @@ export default function SideBar() {
     const [expanded, setExpanded] = useState(true);
 
     return (
-        <div id="menu" className={`h-full bg-[#3F4259] flex flex-col justify-center items-center drop-shadow-[0 35px 35px rgb(0, 0, 0, 0.50)] ${expanded ? "w-[420px]" : "w-[50px]"}`}>
+        <div id="menu" className={`h-full bg-[#3F4259] flex flex-col justify-center items-center drop-shadow-[0 35px 35px rgb(0, 0, 0, 0.50)] ${expanded ? "w-[420px]" : "w-[50px]"} transition-all`}>
             <button className="text-white absolute top-0 left-2" onClick={() => setExpanded(curr => !curr)}>
                 <svg className={`${expanded ? "w-[40px] h-[40px]" : "hidden"}`} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />

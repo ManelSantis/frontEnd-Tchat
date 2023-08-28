@@ -24,7 +24,7 @@ export default function CriacaoSala() {
         <main className="w-full h-full flex">
             <SideBar></SideBar>
             <div className="w-full lg:w-[600px] h-full bg-[#9499CC] flex flex-col justify-center items-center px-24">
-                <h1 className="text-7xl font-semibold text-white mb-16">Criacão de Sala</h1>
+                <h1 className="text-7xl font-semibold text-white mb-16">Criação de Sala</h1>
                 <form onSubmit={handleSubmit(onSubmit)} className="w-full">
                     <div>
                         <label htmlFor="name" className="text-white font-semibold">Nome</label>
@@ -39,7 +39,6 @@ export default function CriacaoSala() {
                        <AddUserChat></AddUserChat>
                     </div>
                     
-
                     <button
                         type="submit"
                         className="w-full outline-none h-16 rounded flex justify-center items-center bg-[#6C7099] text-white font-semibold mt-6 hover:bg-[#4f5270] transition">
