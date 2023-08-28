@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import criacaoImg from "../../assets/criacao.svg";
 import SideBar from "../../components/sideBar.tsx";
+import AddUserChat from "../../components/addUserChat.tsx";
 
 const createRoomFormSchema = z.object({
     name: z.string().min(10),
@@ -35,21 +36,19 @@ export default function CriacaoSala() {
                     </div>
                     <div>
                         <label htmlFor="search" className="text-white font-semibold">Participantes</label><br />
-                        <div className="flex">
-                        <input className="w-[87%] outline-none px-3 h-14 rounded" type="text" id="search" />
-                        <label id="add" className="w-14 outline-none h-14 flex rounded justify-center items-center bg-[#3F4259] cursor-pointer text-white font-semibold mt-6 hover:bg-[#2E303C]">+</label>
-                        </div>
+                       <AddUserChat></AddUserChat>
                     </div>
+                    
 
                     <button
                         type="submit"
-                        className="w-full outline-none h-14 rounded flex justify-center items-center bg-[#6C7099] text-white font-semibold mt-6 hover:bg-[#4f5270] transition">
+                        className="w-full outline-none h-16 rounded flex justify-center items-center bg-[#6C7099] text-white font-semibold mt-6 hover:bg-[#4f5270] transition">
                         Criar Sala
                     </button>
                 </form>
             </div>
             <div className="md:flex flex-1 flex-col bg-[#9499CC] justify-center p-20 sm:hidden">
-                <img src={criacaoImg} alt="Cadastro image" className="lg:max-w-2xl self-end lg:mt-9 md:max-w-xl md:mt-24 md:mr-24" />
+                <img src={criacaoImg} alt="Cadastro image" className="lg:max-w-3xl self-end lg:mt-9 md:max-w-xl md:mt-24 md:mr-24" />
             </div>
             <script src="criacao.js"></script>
         </main>
