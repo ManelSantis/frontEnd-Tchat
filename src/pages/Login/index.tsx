@@ -30,12 +30,14 @@ export default function Login() {
                         <label htmlFor="password" className="text-white font-semibold mt-6">Senha</label>
                         <input className="w-full outline-none px-3 h-14 rounded" type="password" id="password" {...register("password")} />
                     </div>
+                    <Link to={'/criacaoSala'}>
                     <button 
                         type="submit" 
                         className="w-full outline-none h-14 rounded flex justify-center items-center bg-[#3F4259] text-white font-semibold mt-6 hover:bg-[#2E303C] transition"
                     >
                         Entrar
                     </button>
+                    </Link>
                     <div className="font-semibold text-xl text-[#E5E48C] mt-6">
                         Não tem uma conta? <Link className="text-[#3F4259] hover:text-white" to={'/cadastro'}>Cadastre-se</Link>
                     </div>

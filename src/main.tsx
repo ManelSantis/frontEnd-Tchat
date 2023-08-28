@@ -6,6 +6,8 @@ import {
 } from "react-router-dom";
 import App from './App.tsx';
 import Cadastro from './pages/Cadastro/cadastro.tsx';
+import Criacao from './pages/CriacaoSala/criacaoSala.tsx';
+
 
 const router = createBrowserRouter([
   {
@@ -16,6 +18,11 @@ const router = createBrowserRouter([
     path: "/cadastro",
     element: <Cadastro />,
   },
+  {
+    path: "/criacaoSala",
+    element: <Criacao />,
+  },
+
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
