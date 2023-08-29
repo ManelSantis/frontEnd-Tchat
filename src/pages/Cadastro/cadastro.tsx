@@ -1,24 +1,69 @@
+import { zodResolver } from "@hookform/resolvers/zod";
+import { CircularProgress } from "@mui/material";
+import { XCircle } from "lucide-react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import cadastroImg from "../../assets/cadastro.svg";
+import SnackbarCustom from "../../components/SnackbarCustom";
+import { requestBackendSignUp } from "../../services/api";
+import { getCountries } from "../../services/countries";
 
 const signUpFormSchema = z.object({
-    name: z.string(),
-    email: z.string().email(),
-    password: z.string().min(6),
-    language: z.string(),
-    birth: z.string().datetime(),
-    country: z.string()
-});
+    name: z.string().nonempty("Nome é obrigatório").max(50, "Nome deve conter no máximo 50 caracteres"),
+    email: z.string().email("E-mail inválido").nonempty("E-mail é obrigatório"),
+    password: z.string().min(6, "Senha deve conter no mínimo 6 caracteres"),
+    confirmPassword: z.string().min(6, "Senha deve conter no mínimo 6 caracteres"),
+    defaultLanguage: z.string().nonempty("Idioma é obrigatório"),
+    birthDate: z.string().pipe(z.coerce.date()),
+    nationality: z.string().nonempty("País é obrigatório"),
+}).refine((data) => 
+    data.password === data.confirmPassword, {
+        path: ["confirmPassword"],
+        message: "As senhas não coincidem",
+    }
+);
+
+type country = {
+    id: {
+        "ISO-3166-1-ALPHA-2": string;
+    };
+    nome: {
+        "abreviado-EN": string;
+    };
+}
 
 type SignUpFormData = z.infer<typeof signUpFormSchema>;
 
 export default function Cadastro() {
-    const { register, handleSubmit } = useForm<SignUpFormData>();
+    const { register, handleSubmit, formState: { errors } } = useForm<SignUpFormData>({
+        resolver: zodResolver(signUpFormSchema)
+    });
+    const [success, setSuccess] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [countries, setCountries] = useState<country[]>([]);
 
     const onSubmit = (data: SignUpFormData) => {
-        console.log(data);
+        setLoading(true);
+        requestBackendSignUp(data)
+            .then(response => {
+                setSuccess(true);
+                setLoading(false);
+                console.log(response);
+            }).catch(error => {
+                console.log(error);
+                setLoading(false);
+            });
     }
+
+    useEffect(() => {
+        getCountries().then(response => {
+            setCountries(response.data);
+        }).catch(error => {
+            console.log(error);
+        });
+
+    }, []);
 
     return (
         <main className="w-full h-full flex">
@@ -31,52 +76,100 @@ export default function Cadastro() {
                 <img src={cadastroImg} alt="Cadastro image" className="lg:max-w-3xl self-end lg:mt-9 md:max-w-xl md:mt-24 md:mr-24" />
             </div>
             <div className="w-full lg:w-[600px] h-full bg-[#6C7099] flex flex-col justify-center items-center px-24">
-                <h1 className="text-7xl font-semibold text-white mb-16">Cadastro</h1>
+                <h1 className="text-7xl font-semibold text-white mb-6">Cadastro</h1>
                 <form onSubmit={handleSubmit(onSubmit)} className="w-full">
                     <div>
                         <label htmlFor="name" className="text-white font-semibold">Nome</label>
                         <input className="w-full outline-none px-3 h-14 rounded" type="text" id="name" {...register("name")} />
+                        {errors.name && (
+                            <div className="h-auto mt-1 absolute flex items-center">
+                                <XCircle className="text-[#BABEE5]" size={19} />
+                                <p className="text-[#BABEE5] ml-1 font-semibold sm:text-sm lg:text-xl">{errors.name.message}</p>
+                            </div>
+                        )}
                     </div>
-                    <div>
-                        <br />
+                    <div className="mt-10">
                         <label htmlFor="email" className="text-white font-semibold">E-mail</label>
                         <input className="w-full outline-none px-3 h-14 rounded" type="email" id="email" {...register("email")} />
+                        {errors.email && (
+                            <div className="h-auto mt-1 absolute flex items-center">
+                                <XCircle className="text-[#BABEE5]" size={19} />
+                                <p className="text-[#BABEE5] ml-1 font-semibold sm:text-sm lg:text-xl">{errors.email.message}</p>
+                            </div>
+                        )}
                     </div>
-                    <div className="flex">
+                    <div className="w-full flex gap-8 sm:flex-col lg:flex-row mt-4">
                         <div className="flex-1">
                             <label htmlFor="password" className="text-white font-semibold mt-6">Senha</label>
-                            <input className="w-[95%] outline-none px-3 h-14 rounded flex-1" type="password" id="password" {...register("password")} />
+                            <input className="w-full outline-none px-3 h-14 rounded" type="password" id="password" {...register("password")} />
+                            {errors.password && (
+                            (
+                                <div className="h-auto mt-1 absolute flex items-center">
+                                    <XCircle className="text-[#BABEE5]" size={19} />
+                                    <p className="text-[#BABEE5] ml-1 font-semibold sm:text-sm lg:text-xl">{errors.password.message}</p>
+                                </div>
+                            )
+                            )}
                         </div>
                         <div className="flex-1">
                             <label htmlFor="repeat" className="text-white font-semibold mt-6">Repetir senha</label>
-                            <input className="w-full outline-none px-3 h-14 rounded flex-1" type="password" id="repeat" />
+                            <input className="w-full outline-none px-3 h-14 rounded" type="password" id="repeat"  {...register("confirmPassword")}/>
+                            {errors.confirmPassword && (
+                            <div className="h-auto mt-1 absolute flex items-center">
+                                <XCircle className="text-[#BABEE5]" size={19} />
+                                <p className="text-[#BABEE5] ml-1 font-semibold sm:text-sm lg:text-xl">{errors.confirmPassword.message}</p>
+                            </div>
+                        )}
                         </div>
                     </div>
-                    <div className="flex">
+                    <div className="w-full flex gap-8 sm:flex-col lg:flex-row mt-6">
                         <div className="flex-1">
-                            <label htmlFor="language" className="text-white font-semibold mt-6">Lingua nativa</label>
-                            <input className="w-[95%] outline-none px-3 h-14 rounded flex-1" type="text" id="language" {...register("language")} />
+                            <label htmlFor="country" className="text-white font-semibold mt-6">Nacionalidade</label>
+                            <select className="w-full outline-none px-3 h-14 rounded" id="country" {...register("nationality")}>
+                                <option value="">Selecione um país</option>
+                                {
+                                    countries.map(country => (
+                                        <option key={country.id["ISO-3166-1-ALPHA-2"]} value={country.nome["abreviado-EN"]}>{`${country.id["ISO-3166-1-ALPHA-2"]} - ${country.nome["abreviado-EN"]}`}</option>
+                                    ))
+                                }
+                            </select>
+                            {errors.nationality && (
+                                 <div className="h-auto mt-1 absolute flex items-center">
+                                 <XCircle className="text-[#BABEE5]" size={19} />
+                                 <p className="text-[#BABEE5] ml-1 font-semibold sm:text-sm lg:text-xl">{errors.nationality.message}</p>
+                             </div>
+                            )}
                         </div>
                         <div className="flex-1">
                             <label htmlFor="birth" className="text-white font-semibold mt-6">Nascimento</label>
-                            <input className="w-full outline-none px-3 h-14 rounded flex-1" type="date" id="birth" {...register("birth")} />
+                            <input className="w-full outline-none px-3 h-14 rounded" type="date" id="birth" {...register("birthDate")} />
+                            {errors.birthDate && (
+                            <div className="h-auto mt-1 absolute flex items-center">
+                                <XCircle className="text-[#BABEE5]" size={19} />
+                                <p className="text-[#BABEE5] ml-1 font-semibold sm:text-sm lg:text-xl">{errors.birthDate.message}</p>
+                            </div>
+                        )}
                         </div>
                     </div>
-                    <div>
-                        <br />
-                        <label htmlFor="country" className="text-white font-semibold">Nacionalidade</label>
-                        <select className="w-full outline-none px-3 h-14 rounded" id="country" {...register("country")}>
-                            <option value=""></option>
-                            <option value=""></option>
-                        </select>
+                    <div className="mt-6">
+                        <label htmlFor="language" className="text-white font-semibold mt-6">Lingua nativa</label>
+                        <input className="w-full outline-none px-3 h-14 rounded" type="text" id="language" {...register("defaultLanguage")} />
+                        {errors.defaultLanguage && (
+                            <div className="h-auto mt-1 absolute flex items-center">
+                                <XCircle className="text-[#BABEE5]" size={19} />
+                                <p className="text-[#BABEE5] ml-1 font-semibold sm:text-sm lg:text-xl">{errors.defaultLanguage.message}</p>
+                            </div>
+                        )}
                     </div>
                     <button
                         type="submit"
-                        className="w-full outline-none h-14 rounded flex justify-center items-center bg-[#3F4259] text-white font-semibold mt-6 hover:bg-[#2E303C] transition">
-                        Concluir
+                        disabled={loading}
+                        className="w-full outline-none h-14 rounded flex justify-center items-center bg-[#3F4259] text-white font-semibold mt-11 hover:bg-[#2E303C] transition">
+                        {loading ? <CircularProgress size={24} color="inherit" /> : "Concluir"}
                     </button>
                 </form>
             </div>
+            <SnackbarCustom open={success} setOpen={setSuccess} />
         </main>
     )
 }

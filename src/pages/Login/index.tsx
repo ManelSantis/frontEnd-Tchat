@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import { z } from "zod";
 import loginImg from "../../assets/login.svg";
 import SnackbarCustom from "../../components/SnackbarCustom";
-import { requestBackendLogin } from '../../services/axios';
+import { requestBackendLogin } from '../../services/api';
 
 const signInFormSchema = z.object({
     username: z.string().email("E-mail inválido").nonempty("E-mail é obrigatório"),
@@ -20,7 +20,6 @@ export default function Login() {
     const { register, handleSubmit, formState: { errors } } = useForm<SignInFormData>({ 
         resolver: zodResolver(signInFormSchema) 
     });
-
     const [success, setSuccess] = useState(false);
     const [loading, setLoading] = useState(false);
 
@@ -65,6 +64,7 @@ export default function Login() {
                     </div>
                     <button 
                         type="submit"
+                        disabled={loading}
                         className="w-full outline-none h-14 rounded flex justify-center items-center bg-[#3F4259] text-white font-semibold mt-14 hover:bg-[#2E303C] transition"
                     >
                         {loading ? <CircularProgress size={24} color="inherit" /> : "Entrar"}
