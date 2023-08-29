@@ -62,7 +62,6 @@ export default function Login() {
                            </div>
                         )}
                     </div>
-                    <Link to={'/criacaoSala'}>
                     <button 
                         type="submit"
                         disabled={loading}
@@ -70,7 +69,6 @@ export default function Login() {
                     >
                         {loading ? <CircularProgress size={24} color="inherit" /> : "Entrar"}
                     </button>
-                    </Link>
                     <div className="font-semibold text-xl text-[#E5E48C] mt-6">
                         Não tem uma conta? <Link className="text-[#3F4259] hover:text-white" to={'/cadastro'}>Cadastre-se</Link>
                     </div>
