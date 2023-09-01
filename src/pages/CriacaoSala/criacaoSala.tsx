@@ -21,7 +21,7 @@ export default function CriacaoSala() {
 
     return (
 
-        <main className="w-full h-full flex">
+        <main className="w-full h-full flex fixed">
             <SideBar></SideBar>
             <div className="w-full lg:w-[600px] h-full bg-[#9499CC] flex flex-col justify-center items-center px-24">
                 <h1 className="text-7xl font-semibold text-white mb-16">Criação de Sala</h1>
@@ -35,7 +35,6 @@ export default function CriacaoSala() {
                         <input className="w-full outline-none px-3 h-[80px] rounded" type="text" id="description" {...register("description")} />
                     </div>
                     <div>
-                        <label htmlFor="search" className="text-white font-semibold">Participantes</label><br />
                        <AddUserChat></AddUserChat>
                     </div>
                     
@@ -49,7 +48,6 @@ export default function CriacaoSala() {
             <div className="md:flex flex-1 flex-col bg-[#9499CC] justify-center p-20 sm:hidden">
                 <img src={criacaoImg} alt="Cadastro image" className="lg:max-w-3xl self-end lg:mt-9 md:max-w-xl md:mt-24 md:mr-24" />
             </div>
-            <script src="criacao.js"></script>
         </main>
     )
 }

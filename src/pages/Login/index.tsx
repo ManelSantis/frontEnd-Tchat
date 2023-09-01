@@ -30,7 +30,7 @@ export default function Login() {
                         <label htmlFor="password" className="text-white font-semibold mt-6">Senha</label>
                         <input className="w-full outline-none px-3 h-14 rounded" type="password" id="password" {...register("password")} />
                     </div>
-                    <Link to={'/criacaoSala'}>
+                    <Link to={'/mainPage'}>
                     <button 
                         type="submit" 
                         className="w-full outline-none h-14 rounded flex justify-center items-center bg-[#3F4259] text-white font-semibold mt-6 hover:bg-[#2E303C] transition"

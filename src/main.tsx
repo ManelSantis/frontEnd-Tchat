@@ -7,6 +7,8 @@ import {
 import App from './App.tsx';
 import Cadastro from './pages/Cadastro/cadastro.tsx';
 import Criacao from './pages/CriacaoSala/criacaoSala.tsx';
+import MainPage from './pages/MainPage/mainPage.tsx';
+
 
 
 const router = createBrowserRouter([
@@ -21,6 +23,10 @@ const router = createBrowserRouter([
   {
     path: "/criacaoSala",
     element: <Criacao />,
+  },
+  {
+    path: "/mainPage",
+    element: <MainPage />,
   },
 
 ]);
