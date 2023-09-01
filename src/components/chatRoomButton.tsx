@@ -1,4 +1,4 @@
-export default function ChatRoomButton() {
+export default function ChatRoomButton({groupName, usersNumber = 0}) {
     return (
         <>
         <div className={`w-[340px] h-24 cursor-pointer rounded-[5px] ml-3 mt-2 hover:bg-[#4c4f77] flex items-center`}>
@@ -6,8 +6,8 @@ export default function ChatRoomButton() {
             <span className={`font-bold text-3xl text-[#16144d]`}>GP</span>
             </div>
         <div>
-            <strong className={`text-white pl-4 pt-2 text-3xl`}>Grupo de grupo</strong><br />
-            <span className={`text-white pl-4 pt-[2px] text-lg`}>Participantes 0/0</span>
+            <strong className={`text-white pl-4 pt-2 text-3xl`}>{groupName}</strong><br />
+            <span className={`text-white pl-4 pt-[2px] text-lg`}>Participantes {usersNumber}/50</span>
         </div>
         </div>
         </>

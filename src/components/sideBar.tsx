@@ -25,12 +25,11 @@ export default function SideBar() {
                     <Link to={'/criacaoSala'}><button className={`w-[100px] bg-[#6C7099] mt-4 h-12 ml-4 rounded-[5px] text-white hover:bg-[#5c5f8d]`}>Criar Sala</button></Link>
                 </div>
                 <div id="chatRooms" className={``}>
-                    
-                        <ChatRoomButton></ChatRoomButton>
-                        <ChatRoomButton></ChatRoomButton>
-                        <ChatRoomButton></ChatRoomButton>
-                        <ChatRoomButton></ChatRoomButton>
-                        <ChatRoomButton></ChatRoomButton>
+                        <ChatRoomButton groupName="Anime"/>
+                        <ChatRoomButton groupName="Jogos"/>
+                        <ChatRoomButton groupName="Informática"/>
+                        <ChatRoomButton groupName="Conhecer novas pessoas"/>
+                        <ChatRoomButton groupName="Fãs da Taylor Swift"/>
 
                 </div>
             </div>
