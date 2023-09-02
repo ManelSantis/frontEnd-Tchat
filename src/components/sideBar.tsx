@@ -24,13 +24,21 @@ export default function SideBar() {
                     <input className="w-[225px] outline-none mt-4 ml-4 pl-4 h-12 rounded" placeholder="Pesquisar..." type="text" id="search"/>
                     <Link to={'/criacaoSala'}><button className={`w-[100px] bg-[#6C7099] mt-4 h-12 ml-4 rounded-[5px] text-white hover:bg-[#5c5f8d]`}>Criar Sala</button></Link>
                 </div>
-                <div id="chatRooms" className={``}>
+                <div id="chatRooms" className={`w-full h-[530px] overflow-y-auto`}>
                         <ChatRoomButton groupName="Anime"/>
                         <ChatRoomButton groupName="Jogos"/>
                         <ChatRoomButton groupName="Informática"/>
                         <ChatRoomButton groupName="Conhecer novas pessoas"/>
                         <ChatRoomButton groupName="Fãs da Taylor Swift"/>
-
+                        <ChatRoomButton groupName="Anime"/>
+                        <ChatRoomButton groupName="Jogos"/>
+                        <ChatRoomButton groupName="Informática"/>
+                        <ChatRoomButton groupName="Conhecer novas pessoas"/>
+                        <ChatRoomButton groupName="Fãs da Taylor Swift"/>
+                        <ChatRoomButton groupName="Jogos"/>
+                        <ChatRoomButton groupName="Informática"/>
+                        <ChatRoomButton groupName="Conhecer novas pessoas"/>
+                        <ChatRoomButton groupName="Fãs da Taylor Swift"/>
                 </div>
             </div>
         </div>
