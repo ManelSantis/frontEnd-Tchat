@@ -8,7 +8,7 @@ import App from './App.tsx';
 import Cadastro from './pages/Cadastro/cadastro.tsx';
 import Criacao from './pages/CriacaoSala/criacaoSala.tsx';
 import MainPage from './pages/MainPage/mainPage.tsx';
-
+import Sala from './pages/Sala/sala.tsx';
 
 
 const router = createBrowserRouter([
@@ -27,6 +27,10 @@ const router = createBrowserRouter([
   {
     path: "/mainPage",
     element: <MainPage />,
+  },
+  {
+    path: "/sala/:groupName/:groupId",
+    element: <Sala />,
   },
 
 ]);
