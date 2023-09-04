@@ -14,7 +14,7 @@ const signUpFormSchema = z.object({
     email: z.string().email("E-mail inválido").nonempty("E-mail é obrigatório"),
     password: z.string().min(6, "Senha deve conter no mínimo 6 caracteres"),
     confirmPassword: z.string().min(6, "Senha deve conter no mínimo 6 caracteres"),
-    defaultLanguage: z.string().nonempty("Idioma é obrigatório"),
+    defaultLanguage: z.string(),
     birthDate: z.string().pipe(z.coerce.date()),
     nationality: z.string().nonempty("País é obrigatório"),
 }).refine((data) => 
@@ -69,13 +69,13 @@ export default function Cadastro() {
         <main className="w-full h-full flex">
             <div className="md:flex flex-1 flex-col justify-center p-28 sm:hidden">
                 <h1 className="flex flex-col max-w-5xl">
-                    <span className="lg:text-7xl font-bold md:text-5xl "><span className="text-[#6C7099]">TChat -</span> Junte-se à nossa comunidade global de conversas: </span>
-                    <span className="font-semibold lg:text-2xl mt-3 md:text-lg"><span className="text-[#6C7099]">Crie uma conta</span> e comece a
-                        <span className="text-[#6C7099]"> conectar-se </span>  instantaneamente com pessoas de todo o mundo, em seus<span className="text-[#6C7099]"> próprios idiomas.</span></span>
+                    <span className="lg:text-7xl font-bold md:text-5xl "><span className="text-primary">TChat -</span> Junte-se à nossa comunidade global de conversas: </span>
+                    <span className="font-semibold lg:text-2xl mt-3 md:text-lg"><span className="text-pribg-primary">Crie uma conta</span> e comece a
+                        <span className="text-pribg-primary"> conectar-se </span>  instantaneamente com pessoas de todo o mundo, em seus<span className="text-pribg-primary"> próprios idiomas.</span></span>
                 </h1>
                 <img src={cadastroImg} alt="Cadastro image" className="lg:max-w-3xl self-end lg:mt-9 md:max-w-xl md:mt-24 md:mr-24" />
             </div>
-            <div className="w-full lg:w-[600px] h-full bg-[#6C7099] flex flex-col justify-center items-center px-24">
+            <div className="w-full lg:w-[600px] h-full bg-primary flex flex-col justify-center items-center px-24">
                 <h1 className="text-7xl font-semibold text-white mb-6">Cadastro</h1>
                 <form onSubmit={handleSubmit(onSubmit)} className="w-full">
                     <div>
@@ -83,8 +83,8 @@ export default function Cadastro() {
                         <input className="w-full outline-none px-3 h-14 rounded" type="text" id="name" {...register("name")} />
                         {errors.name && (
                             <div className="h-auto mt-1 absolute flex items-center">
-                                <XCircle className="text-[#BABEE5]" size={19} />
-                                <p className="text-[#BABEE5] ml-1 font-semibold sm:text-sm lg:text-xl">{errors.name.message}</p>
+                                <XCircle className="text-secondary" size={19} />
+                                <p className="text-secondary ml-1 font-semibold sm:text-sm lg:text-xl">{errors.name.message}</p>
                             </div>
                         )}
                     </div>
@@ -93,8 +93,8 @@ export default function Cadastro() {
                         <input className="w-full outline-none px-3 h-14 rounded" type="email" id="email" {...register("email")} />
                         {errors.email && (
                             <div className="h-auto mt-1 absolute flex items-center">
-                                <XCircle className="text-[#BABEE5]" size={19} />
-                                <p className="text-[#BABEE5] ml-1 font-semibold sm:text-sm lg:text-xl">{errors.email.message}</p>
+                                <XCircle className="text-secondary" size={19} />
+                                <p className="text-secondary ml-1 font-semibold sm:text-sm lg:text-xl">{errors.email.message}</p>
                             </div>
                         )}
                     </div>
@@ -105,8 +105,8 @@ export default function Cadastro() {
                             {errors.password && (
                             (
                                 <div className="h-auto mt-1 absolute flex items-center">
-                                    <XCircle className="text-[#BABEE5]" size={19} />
-                                    <p className="text-[#BABEE5] ml-1 font-semibold sm:text-sm lg:text-xl">{errors.password.message}</p>
+                                    <XCircle className="text-secondary" size={19} />
+                                    <p className="text-secondary ml-1 font-semibold sm:text-sm lg:text-xl">{errors.password.message}</p>
                                 </div>
                             )
                             )}
@@ -116,8 +116,8 @@ export default function Cadastro() {
                             <input className="w-full outline-none px-3 h-14 rounded" type="password" id="repeat"  {...register("confirmPassword")}/>
                             {errors.confirmPassword && (
                             <div className="h-auto mt-1 absolute flex items-center">
-                                <XCircle className="text-[#BABEE5]" size={19} />
-                                <p className="text-[#BABEE5] ml-1 font-semibold sm:text-sm lg:text-xl">{errors.confirmPassword.message}</p>
+                                <XCircle className="text-secondary" size={19} />
+                                <p className="text-secondary ml-1 font-semibold sm:text-sm lg:text-xl">{errors.confirmPassword.message}</p>
                             </div>
                         )}
                         </div>
@@ -125,7 +125,7 @@ export default function Cadastro() {
                     <div className="w-full flex gap-8 sm:flex-col lg:flex-row mt-6">
                         <div className="flex-1">
                             <label htmlFor="country" className="text-white font-semibold mt-6">Nacionalidade</label>
-                            <select className="w-full outline-none px-3 h-14 rounded" id="country" {...register("nationality")}>
+                            <select className="w-full outline-none text-black px-3 h-14 rounded" id="country" {...register("nationality")}>
                                 <option value="">Selecione um país</option>
                                 {
                                     countries.map(country => (
@@ -135,8 +135,8 @@ export default function Cadastro() {
                             </select>
                             {errors.nationality && (
                                  <div className="h-auto mt-1 absolute flex items-center">
-                                 <XCircle className="text-[#BABEE5]" size={19} />
-                                 <p className="text-[#BABEE5] ml-1 font-semibold sm:text-sm lg:text-xl">{errors.nationality.message}</p>
+                                 <XCircle className="text-secondary" size={19} />
+                                 <p className="text-secondary ml-1 font-semibold sm:text-sm lg:text-xl">{errors.nationality.message}</p>
                              </div>
                             )}
                         </div>
@@ -145,8 +145,8 @@ export default function Cadastro() {
                             <input className="w-full outline-none px-3 h-14 rounded" type="date" id="birth" {...register("birthDate")} />
                             {errors.birthDate && (
                             <div className="h-auto mt-1 absolute flex items-center">
-                                <XCircle className="text-[#BABEE5]" size={19} />
-                                <p className="text-[#BABEE5] ml-1 font-semibold sm:text-sm lg:text-xl">{errors.birthDate.message}</p>
+                                <XCircle className="text-secondary" size={19} />
+                                <p className="text-secondary ml-1 font-semibold sm:text-sm lg:text-xl">{errors.birthDate.message}</p>
                             </div>
                         )}
                         </div>
@@ -156,15 +156,15 @@ export default function Cadastro() {
                         <input className="w-full outline-none px-3 h-14 rounded" type="text" id="language" {...register("defaultLanguage")} />
                         {errors.defaultLanguage && (
                             <div className="h-auto mt-1 absolute flex items-center">
-                                <XCircle className="text-[#BABEE5]" size={19} />
-                                <p className="text-[#BABEE5] ml-1 font-semibold sm:text-sm lg:text-xl">{errors.defaultLanguage.message}</p>
+                                <XCircle className="text-secondary" size={19} />
+                                <p className="text-secondary ml-1 font-semibold sm:text-sm lg:text-xl">{errors.defaultLanguage.message}</p>
                             </div>
                         )}
                     </div>
                     <button
                         type="submit"
                         disabled={loading}
-                        className="w-full outline-none h-14 rounded flex justify-center items-center bg-[#3F4259] text-white font-semibold mt-11 hover:bg-[#2E303C] transition">
+                        className="w-full outline-none h-14 rounded flex justify-center items-center bg-tertiary text-white font-semibold mt-11 hover:bg-[#2E303C] transition">
                         {loading ? <CircularProgress size={24} color="inherit" /> : "Concluir"}
                     </button>
                 </form>
