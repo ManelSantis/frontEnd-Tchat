@@ -3,6 +3,7 @@ import { CircularProgress } from "@mui/material";
 import { XCircle } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import { z } from "zod";
 import cadastroImg from "../../assets/cadastro.svg";
 import SnackbarCustom from "../../components/SnackbarCustom";
@@ -29,19 +30,29 @@ type country = {
         "ISO-3166-1-ALPHA-2": string;
     };
     nome: {
-        "abreviado-EN": string;
+        "abreviado": string;
     };
+    linguas: [{nome: string}]
+
 }
 
 type SignUpFormData = z.infer<typeof signUpFormSchema>;
 
 export default function Cadastro() {
-    const { register, handleSubmit, formState: { errors } } = useForm<SignUpFormData>({
+    const navigate = useNavigate();
+    const { register, handleSubmit, formState: { errors }, setValue } = useForm<SignUpFormData>({
         resolver: zodResolver(signUpFormSchema)
     });
     const [success, setSuccess] = useState(false);
     const [loading, setLoading] = useState(false);
     const [countries, setCountries] = useState<country[]>([]);
+
+    const handleLanguage = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        const country = countries.find(country => country.nome["abreviado"] === event.target.value);
+        if(country) {
+            setValue("defaultLanguage", country.linguas[0].nome);
+        }
+    }
 
     const onSubmit = (data: SignUpFormData) => {
         setLoading(true);
@@ -50,6 +61,9 @@ export default function Cadastro() {
                 setSuccess(true);
                 setLoading(false);
                 console.log(response);
+                setTimeout(() => {
+                    navigate('/');
+                }, 3000);
             }).catch(error => {
                 console.log(error);
                 setLoading(false);
@@ -57,8 +71,13 @@ export default function Cadastro() {
     }
 
     useEffect(() => {
-        getCountries().then(response => {
-            setCountries(response.data);
+        getCountries().then(response => {   
+            const arr: country[] = [];
+            response.data.forEach((country: country) => {
+                arr.find((c: country) => c.nome["abreviado"] === country.nome["abreviado"]) ? null : arr.push(country);
+            });
+            
+            setCountries(arr);
         }).catch(error => {
             console.log(error);
         });
@@ -125,11 +144,15 @@ export default function Cadastro() {
                     <div className="w-full flex gap-8 sm:flex-col lg:flex-row mt-6">
                         <div className="flex-1">
                             <label htmlFor="country" className="text-white font-semibold mt-6">Nacionalidade</label>
-                            <select className="w-full outline-none text-black px-3 h-14 rounded" id="country" {...register("nationality")}>
+                            <select className="w-full outline-none text-black px-3 h-14 rounded" id="country" {...register("nationality")}
+                            onChange={handleLanguage}
+                            >
                                 <option value="">Selecione um país</option>
                                 {
                                     countries.map(country => (
-                                        <option key={country.id["ISO-3166-1-ALPHA-2"]} value={country.nome["abreviado-EN"]}>{`${country.id["ISO-3166-1-ALPHA-2"]} - ${country.nome["abreviado-EN"]}`}</option>
+                                        <option 
+                                            key={country.id["ISO-3166-1-ALPHA-2"]} value={country.nome["abreviado"]}
+                                        >{`${country.id["ISO-3166-1-ALPHA-2"]} - ${country.nome["abreviado"]}`}</option>
                                     ))
                                 }
                             </select>
@@ -153,7 +176,7 @@ export default function Cadastro() {
                     </div>
                     <div className="mt-6">
                         <label htmlFor="language" className="text-white font-semibold mt-6">Lingua nativa</label>
-                        <input className="w-full outline-none px-3 h-14 rounded" type="text" id="language" {...register("defaultLanguage")} />
+                        <input className="w-full outline-none px-3 h-14 rounded" type="text" id="language" disabled {...register("defaultLanguage")} />
                         {errors.defaultLanguage && (
                             <div className="h-auto mt-1 absolute flex items-center">
                                 <XCircle className="text-secondary" size={19} />

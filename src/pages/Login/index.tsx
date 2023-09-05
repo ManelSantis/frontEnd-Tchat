@@ -22,6 +22,7 @@ export default function Login() {
         resolver: zodResolver(signInFormSchema) 
     });
     const [openError, setOpenError] = useState(false);
+    const [success, setSuccess] = useState(false);
     const [loading, setLoading] = useState(false);
 
     const onSubmit = (data: SignInFormData) => {
@@ -30,7 +31,10 @@ export default function Login() {
             .then(response => {
                 setLoading(false);
                 localStorage.setItem('authData', JSON.stringify(response.data));
-                navigate('/criacaoSala');
+                setSuccess(true);
+                setTimeout(() => {
+                    navigate('/mainpage/criacaoSala');
+                }, 3000);
             })
             .catch(error => {
                 setOpenError(true);
@@ -84,6 +88,7 @@ export default function Login() {
                 <img src={loginImg} alt="Login image" className="lg:max-w-5xl self-end lg:mt-9 md:max-w-xl md:mt-24" />
             </div>
             <SnackbarCustom open={openError} setOpen={setOpenError} type="error" message="Usuário ou senha incorretos" />
+            <SnackbarCustom open={success} setOpen={setSuccess} />
         </main>
     )
 }
