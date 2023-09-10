@@ -14,10 +14,31 @@ export type createRoomData = {
     }
 }
 
-export const createRoom = ({token, body}: createRoomData) => {
+export type listRoomData = {
+    token: string;
+    body: roomData[];
+}
+
+export type roomData = {
+    id: string;
+    title: string;
+    description: string;
+    participants: string[];
+};
+
+export const createRoom = ({ token, body }: createRoomData) => {
     const headers = {
         'Content-Type': 'application/json',
         Authorization: 'Bearer ' + token,
     }
     return api.post("/api/rooms", body, { headers });
+}
+
+export const listRooms = ( token : String) => {
+    const headers = {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + token,
+    };
+
+    return api.get("/api/rooms", {headers});
 }
