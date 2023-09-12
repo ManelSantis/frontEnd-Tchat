@@ -1,15 +1,15 @@
-import { useContext, useState, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext, AuthContextType } from "../context/AuthContext";
+import { listRooms, roomData } from "../services/roomService.ts";
 import ChatRoomButton from "./chatRoomButton";
-import { roomData, listRooms } from "../services/roomService.ts";
 
 export default function SideBar() {
     const navigate = useNavigate();
     const [searchValue, setSearchValue] = useState('');
     const [rooms, setRooms] = useState<roomData[]>([]);
 
-    const { access_token, user } = useContext(AuthContext) as AuthContextType;
+    const { access_token, user, userName } = useContext(AuthContext) as AuthContextType;
 
     //Fazer um for com todos os nomes das salas, IDs, e numero de participantes
     useEffect(() => {
@@ -45,7 +45,7 @@ export default function SideBar() {
                 <div className={`w-[40px] h-[40px] ml-4 mt-8 bg-[#c1c5dd] rounded-full flex items-center justify-center`}>
                     <span className={`font-bold text-3xl text-[#16144d]`}>FS</span>
                 </div>
-                <strong className={`text-white pl-4 pt-4 text-3xl`}>Fulano Sicrano da Silva</strong>
+                <strong className={`text-white pl-4 pt-4 text-3xl`}>{userName}</strong>
                 <span className={`text-white pl-4 pt-0 pb-2 text-lg`}>{user.user_name}</span>
                 <div className={``}>
                     <button className={`w-[100px] bg-[#6C63FF] text-[#FFFFFF] mr-2 rounded-[5px] hover:bg-[#3f3a91] hover:text-[#6C63FF]`}>Perfil</button>

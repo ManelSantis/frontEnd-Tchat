@@ -23,12 +23,16 @@
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.45.4",
     "react-router-dom": "^6.14.2",
+    "react-stomp-hooks": "^2.1.0",
+    "sockjs": "^0.3.24",
+    "sockjs-client": "^1.6.1",
     "zod": "^3.21.4"
   },
   "devDependencies": {
     "@types/qs": "^6.9.7",
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
+    "@types/sockjs-client": "^1.5.1",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
     "@vitejs/plugin-react": "^4.0.3",
