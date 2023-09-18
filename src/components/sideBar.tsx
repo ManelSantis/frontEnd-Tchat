@@ -43,7 +43,9 @@ export default function SideBar() {
         <div id="menu" className={`w-[480px] h-full bg-[#3F4259] flex-col justify-center items-center drop-shadow-[0 35px 35px rgb(0, 0, 0, 0.50)]`}>
             <div className={`w-full h-[150px] bg-[#575b7a] flex flex-col items-center`}>
                 <div className={`w-[40px] h-[40px] ml-4 mt-8 bg-[#c1c5dd] rounded-full flex items-center justify-center`}>
-                    <span className={`font-bold text-3xl text-[#16144d]`}>FS</span>
+                    <span className={`font-bold text-3xl text-[#16144d]`}>{userName.split(' ')[0].charAt(0)}
+                        {userName.split(' ')[1]?.charAt(0)}
+                    </span>
                 </div>
                 <strong className={`text-white pl-4 pt-4 text-3xl`}>{userName}</strong>
                 <span className={`text-white pl-4 pt-0 pb-2 text-lg`}>{user.user_name}</span>
@@ -68,7 +70,9 @@ export default function SideBar() {
                     <Link to={'/mainpage/criacaoSala'}><button className={`w-[100px] bg-[#6C7099] mt-4 h-12 ml-4 rounded-[5px] text-white hover:bg-[#5c5f8d]`}>Criar Sala</button></Link>
                 </div>
                 <div id="chatRooms" className={`w-[355px] h-[530px] overflow-y-auto pb-7 `}>
-                    {filterChatRooms.map((room,index) => (
+                    {searchValue ? filterChatRooms.map((room,index) => (
+                        <ChatRoomButton key={index} groupName={room.title} id={room.id} />
+                    )): rooms.map((room,index) => (
                         <ChatRoomButton key={index} groupName={room.title} id={room.id} />
                     ))}
                 </div>

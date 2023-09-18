@@ -34,7 +34,7 @@ export const createRoom = ({ token, body }: createRoomData) => {
     return api.post("/api/rooms", body, { headers });
 }
 
-export const listRooms = ( token : String) => {
+export const listRooms = ( token : string) => {
     const headers = {
         'Content-Type': 'application/json',
         Authorization: 'Bearer ' + token,
@@ -42,3 +42,21 @@ export const listRooms = ( token : String) => {
 
     return api.get("/api/rooms", {headers});
 }
+
+export const getMessages = ({ token, roomId}: { token: string, roomId: string}) => {
+    const headers = {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + token,
+    };
+
+    return api.get(`/api/messages`, {headers, params: {roomId}});
+};
+
+export const sendMessage = ({ token, body }: { token: string, body: { room: string, content: string }}) => {
+    const headers = {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + token,
+    };
+
+    return api.post(`/api/messages`, body, {headers});
+};

@@ -1,64 +1,60 @@
-import { Client } from "@stomp/stompjs";
 import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import SockJS from "sockjs-client";
+import Stomp from "stompjs";
 import MessageReceive from "../../components/messageReceive.tsx";
 import MessageSend from "../../components/messageSend.tsx";
 import { AuthContext, AuthContextType } from "../../context/AuthContext.tsx";
+import { getMessages, sendMessage } from "../../services/roomService.ts";
 
 export default function Sala() {
-    const { user } = useContext(AuthContext) as AuthContextType;
-    const [stompClient, setStompClient] = useState<any>(null);
+    const { access_token, userId } = useContext(AuthContext) as AuthContextType;
     const [message, setMessage] = useState<string>("");
     const [messages, setMessages] = useState<string[]>([]);
 
     const { groupName, groupId } = useParams();
-    const headers = { Email: user.user_name };
 
     useEffect(() => {
-        const stompConfig = {
-            connectHeaders: {Email: user.user_name },
-            brokerURL: "ws://localhost:8080/api/websocket",
-            debug: function (str: any) {
-                console.log('STOMP: ' + str);
-            },
-            // If disconnected, it will retry after 200ms
-            reconnectDelay: 200,
-            // Subscriptions should be done inside onConnect as those need to reinstated when the broker reconnects
-            onConnect: () => {
-                stompClient.subscribe('ws://localhost:8080/topic/public', onMessageReceived);
-                setStompClient(stompClient);
-            },
-        };
-        const stompClient = new Client(stompConfig);
-        stompClient.activate();}
-    , []);
+        getMessages({ token: access_token, roomId: groupId}).then((response) => {
+            setMessages(response.data.content);
+        });
 
-    function onMessageReceived(payload: any) {
-        const message = JSON.parse(payload.body);
-        setMessages([...messages, message.content]);
-    }
+        subscribe();
+        
+    }, [groupId]);
 
-    function send() {
-        const messageContent = message;
-    
-        if (messageContent && stompClient) {
-            const chatMessage = {
-                content: messageContent,
-            };
-    
-            stompClient.send(`ws://localhost:8080/app/chat/${groupId}/send`, headers, JSON.stringify(chatMessage));
-            setMessage("");
+    const subscribe = () => {
+        const ws = new SockJS('http://localhost:15672')
+
+        const headers = {
+            'login': 'guest',
+            'passcode': 'guest',
+            'durable': 'true',
+            'auto-delete': 'false'
         }
+        const stompClient = Stomp.over(ws)
+
+        stompClient.connect(headers , function(frame){
+            console.log('Connected')
+            const subscription = stompClient.subscribe(`/queue/${userId}`, function(message){
+                console.log(message)
+            })
+        })
     }
 
+    const send = async () => {
+        await sendMessage({ token: access_token, body: { content: message, room: groupId }})
+        setMessage("");
+    };
     return (
             <div className="w-full block">
                 <div className="w-full h-[75px] bg-[#575b7a] flex justify-center items-center border-l-2 border-l-[#9d9aa0]">
                     <span className="text-white text-4xl">{groupName}</span>
                 </div>
                 <div id="chatRoom" className="w-full h-[80%] bg-[#9499CC] overflow-y-auto flex-col items-end">
-                        {messages.map((text, index) => (
-                            <MessageSend key={index} text={text} />
+                        {messages.map((message, index) => (
+                            message.creator.id === userId ? (<MessageSend key={index} text={message.content} />) :
+                            (<MessageReceive key={index} text={message.content} />)
                         ))}
                 </div>
                 <div className="w-full h-[75px] bg-[#575b7a] flex justify-left items-center border-l-2 border-l-[#9d9aa0]">
